@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.loading-bar {
+	width: 200px;
+	height: 20px;
+	background-color: #f2f2f2;
+}
+
+.filled-bar {
+	height: 100%;
+	background-color: #3498db;
+	transition: width 0.3s ease-in-out;
+}

@@ -3,16 +3,19 @@
 @tailwind utilities;
 
 .loading-bar {
-	width: 200px;
-	height: 20px;
+	width: 300px;
+	height: 30px;
 	background-color: #f2f2f2;
 }
 
 .filled-bar {
 	height: 100%;
-	background-color: #3498db;
+	/* background-color: #3498db; */
+	background-color: rgb(168 85 247);
 	transition: width 0.3s ease-in-out;
 }
+
+/* Uploader */
 
 #form-file-upload {
 	height: 16rem;
@@ -35,24 +38,17 @@
 	border-radius: 1rem;
 	border-style: dashed;
 	border-color: #cbd5e1;
-	background-color: #f8fafc;
 }
 
 #label-file-upload.drag-active {
-	background-color: #ffffff;
+	background-color: rgba(190, 235, 190, 0.794);
 }
 
 .upload-button {
 	cursor: pointer;
-	padding: 0.25rem;
 	font-size: 1rem;
 	border: none;
 	font-family: 'Oswald', sans-serif;
-	background-color: transparent;
-}
-
-.upload-button:hover {
-	text-decoration-line: underline;
 }
 
 #drag-file-element {

@@ -74,6 +74,7 @@ export default function Combo() {
 						id='input-file-upload'
 						multiple={true}
 						onChange={handleChange}
+						disabled={uploadProgress !== null}
 					/>
 
 					<label
@@ -82,22 +83,27 @@ export default function Combo() {
 						className={dragActive ? 'drag-active' : ''}
 					>
 						{uploadProgress === null ? (
-							<div>
-								<p>Drag and drop your file here or</p>
-								<button className='upload-button' onClick={onButtonClick}>
-									Upload a file
+							<div className='flex flex-col gap-4 justify-center items-center'>
+								<button
+									className='upload-button px-6 py-4 rounded-lg bg-purple-500 text-white'
+									onClick={onButtonClick}
+								>
+									Upload a Fluff
 								</button>
+								<p>...or drag and drop an image.</p>
 							</div>
 						) : (
-							<div>
-								<p>Uploading: {selectedImage}</p>
-								<p>Progress: {uploadProgress.toFixed(2)}%</p>
-								<div className='loading-bar'>
+							<div className='flex flex-col items-start gap-1'>
+								<p className='font-medium'>Uploading {selectedImage}</p>
+								<div className='loading-bar rounded-lg border border-purple-500'>
 									<div
-										className='filled-bar'
+										className='filled-bar rounded-md'
 										style={{ width: `${uploadProgress}%` }}
-									></div>
+									/>
 								</div>
+								<p className='text-gray-500 text-sm'>
+									{uploadProgress.toFixed(1)}%
+								</p>
 							</div>
 						)}
 					</label>
@@ -119,7 +125,7 @@ export default function Combo() {
 					<img
 						src={imageURL}
 						alt='Uploaded'
-						className='w-full h-auto'
+						className='w-full h-[256px] object-scale-down border-2 border-dashed rounded-2xl border-[#cbd5e1] p-2 hover:!border-red-500 cursor-pointer'
 						onClick={() => {
 							setImageURL('')
 							setUploadProgress(null)

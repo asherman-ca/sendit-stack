@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { handleImageUpload } from '@/app/util/handleImageUpload'
+import { HiOutlineTrash } from 'react-icons/hi'
 
 export default function Combo() {
 	const [selectedImage, setSelectedImage] = useState(null)
@@ -121,7 +122,8 @@ export default function Combo() {
 			)}
 
 			{imageURL && (
-				<div>
+				<div className='relative group'>
+					<HiOutlineTrash className='w-6 h-6 text-red-500 absolute top-5 left-5 hidden group-hover:inline-block' />
 					<img
 						src={imageURL}
 						alt='Uploaded'

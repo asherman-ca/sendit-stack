@@ -1,16 +1,14 @@
 'use client'
 import React, { useState } from 'react'
-// import firebase from 'firebase/app'
-// import 'firebase/storage'
-import { storage } from '@/firebase'
+import { storage, db } from '@/firebase'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { toast } from 'react-hot-toast'
 
 const ImageUploadComponent = () => {
 	const [selectedImage, setSelectedImage] = useState(null)
 	const [uploadProgress, setUploadProgress] = useState(0)
 	const [imageURL, setImageURL] = useState('')
-	// const [progress, setProgress] = useState(0)
 
 	const handleImageUpload = (e) => {
 		const file = e.target.files[0]
@@ -20,10 +18,10 @@ const ImageUploadComponent = () => {
 			return
 		}
 
-		console.log('file', file)
 		const storageRef = ref(storage, `images/${file.name}`)
 
 		if (file) {
+			console.log('file', file)
 			setSelectedImage(file.name)
 			const uploadTask = uploadBytesResumable(storageRef, file)
 			uploadTask.on(
@@ -34,7 +32,7 @@ const ImageUploadComponent = () => {
 					const progress =
 						(snapshot.bytesTransferred / snapshot.totalBytes) * 100
 					setUploadProgress(progress)
-					console.log('Upload is ' + progress.toFixed(2) + '% done')
+					// console.log('Upload is ' + progress.toFixed(2) + '% done')
 					switch (snapshot.state) {
 						case 'paused':
 							console.log('Upload is paused')
@@ -50,48 +48,21 @@ const ImageUploadComponent = () => {
 				() => {
 					// Handle successful uploads on complete
 					// For instance, get the download URL: https://firebasestorage.googleapis.com/...
-					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+					getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
 						console.log('File available at', downloadURL)
 						setImageURL(downloadURL)
+						const doc = await addDoc(collection(db, 'posts'), {
+							imageURL: downloadURL,
+							createdAt: serverTimestamp(),
+						})
 					})
+
 					toast.success('Image uploaded successfully!')
 				}
 			)
 		} else {
 			toast.error('Upload failed!')
 		}
-
-		// if (file) {
-		// 	setSelectedImage(file)
-
-		// 	const uploadTask = storage.storage().ref(`images/${file.name}`).put(file)
-
-		// 	uploadTask.on(
-		// 		'state_changed',
-		// 		(snapshot) => {
-		// 			// Track upload progress
-		// 			const progress = Math.round(
-		// 				(snapshot.bytesTransferred / snapshot.totalBytes) * 100
-		// 			)
-		// 			setUploadProgress(progress)
-		// 		},
-		// 		(error) => {
-		// 			// Handle upload error
-		// 			console.error(error)
-		// 		},
-		// 		() => {
-		// 			// Upload complete
-		// 			storage
-		// 				.storage()
-		// 				.ref('images')
-		// 				.child(file.name)
-		// 				.getDownloadURL()
-		// 				.then((url) => {
-		// 					setImageURL(url)
-		// 				})
-		// 		}
-		// 	)
-		// }
 	}
 
 	return (
@@ -99,8 +70,8 @@ const ImageUploadComponent = () => {
 			<input type='file' onChange={handleImageUpload} />
 			{selectedImage && (
 				<div>
-					<p>Uploading: {selectedImage.name}</p>
-					<p>Progress: {uploadProgress}%</p>
+					<p>Uploading: {selectedImage}</p>
+					<p>Progress: {uploadProgress.toFixed(2)}%</p>
 					<div className='loading-bar'>
 						<div
 							className='filled-bar'
@@ -111,7 +82,7 @@ const ImageUploadComponent = () => {
 			)}
 			{imageURL && (
 				<div>
-					<img src={imageURL} alt='Uploaded' />
+					<img src={imageURL} alt='Uploaded' className='w-80 h-auto' />
 				</div>
 			)}
 		</div>

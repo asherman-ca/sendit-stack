@@ -5,11 +5,11 @@ import React from 'react'
 
 const Nav = async () => {
 	const user = await currentUser()
-	console.log('user', user)
+	console.log('user', user?.id)
 	return (
 		<div className='flex justify-between p-6'>
-			<div>LOGO</div>
-			{user ? <UserButton /> : <div>Sign In</div>}
+			<h1 className='text-xl font-medium'>Sendit Stack</h1>
+			{user ? <UserButton afterSignOutUrl='/' /> : <div>Sign In</div>}
 		</div>
 	)
 }

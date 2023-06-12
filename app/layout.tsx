@@ -18,8 +18,8 @@ export default function RootLayout({
 }) {
 	return (
 		<ClerkProvider>
-			<html lang='en'>
-				<body className={inter.className}>
+			<html lang='en' className='flex flex-col h-[100vh]'>
+				<body className={`flex flex-col flex-1 ${inter.className}`}>
 					<Wrapper>
 						<Nav />
 						{children}

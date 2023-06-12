@@ -2,7 +2,7 @@ import Combo from '@/app/components/Combo'
 
 export default async function Home() {
 	return (
-		<main>
+		<main className='flex-1 flex p-6'>
 			<Combo />
 		</main>
 	)
